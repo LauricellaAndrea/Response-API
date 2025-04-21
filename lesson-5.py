@@ -8,7 +8,7 @@ input_messages = [
  
  {
      "role": "user",
-     "content": "Qual è il meteo di oggi da me?"
+     "content": "Quali sono le ultime notizie di openai?",
  }
 ]
 
@@ -31,4 +31,19 @@ response = client.responses.create(
     tools= tools,
 )
 
-print(response.output_text)
+#print(response.model_dump_son(indent=4)) # in questo modo vediamo le citazioni della nostra ricerca web ma in formato json
+
+print("AI Response:", response.output_text)
+print("\nCitazioni:")
+
+for block in response.output:
+    if not hasattr(block, "content"): # Se non ha l'attributo content, non ci interessa
+        continue\
+
+    for content_item in block.content:
+        if not hasattr(content_item, "citazioni"): # Se non ha l'attributo citationi, non ci interessa
+            continue
+
+        for citazioni in content_item.citationi:
+            if citazioni.type == "url_citazioni": 
+                print(f"URL: {citazioni.title} :{citazioni.url}")
