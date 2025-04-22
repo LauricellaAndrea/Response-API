@@ -27,4 +27,17 @@ response = client.responses.create(
     tools=tools
 )
 
-print(response.output_text)
+print("Agent Response:", response.output_text) # questo è il testo di risposta del modello
+
+print("Annotation:") 
+for output_item in response.output:
+    if output_item.type == "message":
+        for content_item in output_item.content:
+            if content_item.type == "output_text":
+                for annotation in content_item.annotations:
+                    if annotation.type == "file_citation":
+                        print(f"- Citation from file: {annotation.filename}")
+
+
+              
+            
