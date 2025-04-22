@@ -24,7 +24,8 @@ response = client.responses.create(
     model="gpt-4o-mini",
     instructions="You are a helpful assistant.",
     input=input_messages,
-    tools=tools
+    tools=tools, 
+    include = ["file_search_call.results"] # questo è il campo che ci permette di includere le citazioni della nostra ricerca file
 )
 
 print("Agent Response:", response.output_text) # questo è il testo di risposta del modello
@@ -37,6 +38,8 @@ for output_item in response.output:
                 for annotation in content_item.annotations:
                     if annotation.type == "file_citation":
                         print(f"- Citation from file: {annotation.filename}")
+
+print(response.model_dump_json(indent=4)) # in questo modo vediamo le citazioni della nostra ricerca file ma in formato json
 
 
               
